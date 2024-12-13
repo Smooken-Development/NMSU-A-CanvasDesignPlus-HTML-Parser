@@ -7,12 +7,25 @@ from bs4 import BeautifulSoup
 # run 'pip install beautifulsoup4'
 
 
+'''
+    TODO:
+    - configure Git identity - https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
+    - add NMSU-A Theme
+    - add Title: NMSU-A: DesignPlus Parser
+    - add a credits to Zachary A. Carmichael - Administrative Assistant
+    - change from tk to CTk
+    - make automatically change the HTML Class to apple variation_1
+
+'''
+
+
 '''https://docs.python.org/3/library/tk.html'''
 '''https://customtkinter.tomschimansky.com/documentation/'''
 
 
 #______Code_Formatting______________________
 # intializes variables to hold the needed input code
+appleClass = 'class="kl_apple variation_1 kl_wrapper"'
 progressBar = '<p class="kl_module_progress_bar" style="display: none; color: #000000; background-color: #00b9f2;">Basic Progress Bar (built in browser, hidden in app)</p>\n'
 crimsonBar = 'border-top-width: 3px; border-top-color: #882345;'
 
@@ -46,7 +59,7 @@ def formatCode():
 #_____The_Window____________________________
 # Creates the main window
 windowA = tk.Tk()
-windowA.iconbitmap('D:\\1 - Computer Science Classes\\CS 153\\DesignPlusAutomation\\Icon.ico')
+windowA.iconbitmap('Icon.ico')
 windowA.title("DesignPlus Formatting")
 windowA.geometry("800x600")
 
