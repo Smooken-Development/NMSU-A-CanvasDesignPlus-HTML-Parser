@@ -2,13 +2,13 @@ import tkinter as tk
 # import customtkinter as ctk
 from tkinter import scrolledtext, messagebox, ttk
 from bs4 import BeautifulSoup
-
+import pyperclip
 
 
 # To install the necessary libraries:
 # Download Python 3.11 or higher on the Microsoft Store
 # open command prompt
-# run 'pip install beautifulsoup4'
+# run 'pip install beautifulsoup4 pyperclip'
 
 
 '''
@@ -22,7 +22,13 @@ from bs4 import BeautifulSoup
     - Package it for distribution
     - Fix it so that it deletes all progress bars, then adds one at the top
     - Make it so that it outprints the white text correctly
+    - Change it to also have a button that just formats the clipboard contents
+    - make it add an H2 header and a progress bar if there isn't one"
 
+    
+    IDEAS FOR THE FUTURE:
+    - Make it so that it gets the HTML from the RAW Editor
+    - Look into Selenium - https://www.youtube.com/watch?v=B5X2nyA8RlU
 '''
 
 
@@ -35,7 +41,6 @@ from bs4 import BeautifulSoup
 appleClass = "kl_apple variation_1 kl_wrapper"
 progressBar = '<p class="kl_module_progress_bar" style="display: none; color: #000000; background-color: #00b9f2;">Basic Progress Bar (built in browser, hidden in app)</p>\n'
 crimsonBar = 'border-top-width: 3px; border-top-color: #882345;'
-
 
 # a function to add the variables to the code
 def modifyCode(htmlCode):
@@ -51,6 +56,7 @@ def modifyCode(htmlCode):
         for class_ in soup.find_all(class_="kl_apple variation_2 kl_wrapper"):
             class_['class'] = appleClass
         
+        pyperclip.copy(str(soup))
         return str(soup)
     except Exception as e:
         messagebox.showerror("Error:", f"Failed to process HTML: {e}")
@@ -59,7 +65,15 @@ def modifyCode(htmlCode):
 # a function to output the formatted code in the textbox
 def formatCode():
     inputHTML = inputCode.get("1.0", tk.END)
+    # TEMPORARY FIX:
+    inputHTML = pyperclip.paste()
+
+
     formattedHTML = modifyCode(inputHTML)
+    # TEMPORARY FIX:
+    pyperclip.copy(formattedHTML)
+
+
     outputCode.delete("1.0", tk.END)
     outputCode.insert(tk.END, formattedHTML)
 #___________________________________________
@@ -102,7 +116,7 @@ outputCode.pack()
 
 # Credits Label
 italicFont = ("Arial", 8, "italic")
-creditLable = tk.Label(mainFrame, text="Created by Zachary A. Carmichael - ZacAC2024@outlook.com", font=italicFont, fg="gray")
+creditLable = tk.Label(mainFrame, text="© Created by Zachary A. Carmichael - ZacAC2024@outlook.com - Smooken Development (2024)", font=italicFont, fg="gray")
 creditLable.pack(side="bottom", anchor="se", pady=10)
 
 
