@@ -20,6 +20,8 @@ from bs4 import BeautifulSoup
     - change from tk to CTk
     ✔ make automatically change the HTML Class to apple variation_1
     - Package it for distribution
+    - Fix it so that it deletes all progress bars, then adds one at the top
+    - Make it so that it outprints the white text correctly
 
 '''
 
