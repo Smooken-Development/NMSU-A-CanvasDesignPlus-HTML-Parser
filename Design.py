@@ -3,6 +3,9 @@ import tkinter as tk
 from tkinter import scrolledtext, messagebox, ttk
 from bs4 import BeautifulSoup
 import pyperclip
+import RequirementsUpdater
+
+RequirementsUpdater.checkAndInstall()
 
 
 # To install the necessary libraries:
@@ -16,7 +19,7 @@ import pyperclip
     ✔ configure Git identity - https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
     - add NMSU-A Theme
     ✔ add Title: NMSU-A: DesignPlus Parser
-    - add a credits to Zachary A. Carmichael - Administrative Assistant
+    ✔ add a credits to Zachary A. Carmichael - Administrative Assistant
     - change from tk to CTk
     ✔ make automatically change the HTML Class to apple variation_1
     - Package it for distribution
