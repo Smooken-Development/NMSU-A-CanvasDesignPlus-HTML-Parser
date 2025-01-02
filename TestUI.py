@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
-ctk.set_appearance_mode("light")
-ctk.set_default_color_theme("dark-blue")
+ctk.set_appearance_mode("system")
+ctk.set_default_color_theme("green")
 
 def formatClipboardCode():
     print("Button Clicked")
@@ -11,14 +11,18 @@ app.iconbitmap('Icon.ico')
 app.title("NMSU-A: DesignPlus Parser")
 app.geometry("745x472")
 
-titleLabel = ctk.CTkLabel(app, text="DesignPlus HTML Parser", font=("Gotham", 24, "bold")) # Open Sans or Gotham
+titleFrame = ctk.CTkFrame(master=app, width = 300, height=60, fg_color="#8c0b42", bg_color="#8c0b42")
+titleFrame.pack(padx=10, anchor="nw", side="top")
+
+titleLabel = ctk.CTkLabel(master=titleFrame, text="DesignPlus HTML Parser", font=("Gotham", 24, "bold"), text_color="white") # Open Sans or Gotham
 titleLabel.pack(padx = 25, pady = 20, anchor="nw")
+
 
 menuFrame = ctk.CTkFrame(
     master=app,
     width=300
 )
-menuFrame.pack(fill="y", padx=10, expand = True, anchor = "w")
+menuFrame.pack(fill="y", padx=10, expand = True, anchor = "w", side="bottom")
 
 buttonClipboard = ctk.CTkButton(
     master=menuFrame,
@@ -71,6 +75,16 @@ buttonClose = ctk.CTkButton(
     command=app.destroy
 )
 buttonClose.pack(padx=10, pady=5)
+
+buttonToggle = ctk.CTkButton(
+    master=menuFrame,
+    fg_color="#6d6e71",  # Branding Colors
+    hover_color="#8c0b42",
+    text="Toggle Textboxes",
+    font=("Gotham", 16),
+    command=app.destroy #FIXME
+)
+buttonToggle.pack(pady=85, anchor="se")
 
 '''
 textBoxFrame = ctk.CTkFrame(
