@@ -17,9 +17,16 @@ crimsonBar = 'border-top-width: 3px; border-top-color: #882345;'
 def modifyCode(htmlCode):
     try:
         soup = BeautifulSoup(htmlCode, 'html.parser')
+        h2Counter = 0
 
         for h2 in soup.find_all('h2'):
-            h2.insert_before(BeautifulSoup(progressBar, 'html.parser'))
+            h2Counter += 1
+            if h2Counter > 1:
+                h2.name = 'h3'
+
+        if not soup.find('p', class_='kl_module_progress_bar'):
+            for h2 in soup.find_all('h2'):
+                h2.insert_before(BeautifulSoup(progressBar, 'html.parser'))
 
         for h3 in soup.find_all('h3'):
             h3['style'] = crimsonBar        # uses 'style' because there is special functionality in BeautifulSoup that lets you edit HTML code
@@ -35,30 +42,37 @@ def modifyCode(htmlCode):
 
 # a function to output the formatted code in the textbox
 def formatCode():
-    inputHTML = inputCode.get("1.0", tk.END)
-    # TEMPORARY FIX:
-    inputHTML = pyperclip.paste()
-
+    inputHTML = inputCode.get("1.0", ctk.END)
 
     formattedHTML = modifyCode(inputHTML)
-    # TEMPORARY FIX:
-    pyperclip.copy(formattedHTML)
 
-
-    outputCode.delete("1.0", tk.END)
-    outputCode.insert(tk.END, formattedHTML)
+    outputCode.delete("1.0", ctk.END)
+    outputCode.insert(ctk.END, formattedHTML)
 #___________________________________________
 
 def textBoxToggle():
-    # Toggle visibility of textBoxFrame
+    # Toggles visibility of textBoxFrame
         if textBoxFrame.winfo_ismapped():
             textBoxFrame.pack_forget()  # Hide the frame
         else:
             textBoxFrame.pack(fill="both", padx=5, expand=True, side="right", anchor="ne")
 
+def formatTextboxCodeButton():
+    # This basically does the same as the "Format Code" button
+    # But it also copies the formatted code to the clipboard
+    formatCode()
+    lambda: pyperclip.copy(outputCode.get("1.0", ctk.END))  # Copies formatted code to clipboard
+
+def formatClipboardCodeButton():
+    tempCode = modifyCode(pyperclip.paste())
+    pyperclip.copy(tempCode)
+
+
+# Sets the color for the window
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
 
+# Initializes the main window
 app = ctk.CTk()
 app.iconbitmap('Icon.ico')
 app.title("NMSU-A: DesignPlus Parser")
@@ -93,7 +107,7 @@ buttonClipboard = ctk.CTkButton(
     hover_color="#00B9F2",
     text="Format Clipboard Contents",
     font=("Gotham", 16),
-    command=modifyCode #FIXME
+    command=formatClipboardCodeButton
 )
 buttonClipboard.pack(padx=10, pady=5)
 
@@ -106,7 +120,7 @@ buttonFormatWebCode = ctk.CTkButton(
     hover_color="#8c0b42",
     text="(Work in Progress)",
     font=("Gotham", 16, "italic"),
-    command=lambda: messagebox.showinfo("Error", "This feature is currently under development") #FIXME
+    command=lambda: messagebox.showinfo("Error", "This feature is currently under development") # FOR LATER DEVELOPMENT
 )
 buttonFormatWebCode.pack(padx=10, pady=5)
 
@@ -119,7 +133,7 @@ buttonFormatTextBox = ctk.CTkButton(
     hover_color="#00B9F2",
     text="Format Text Box Code",
     font=("Gotham", 16),
-    command=modifyCode #FIXME
+    command=formatTextboxCodeButton
 )
 buttonFormatTextBox.pack(padx=10, pady=5)
 
@@ -146,6 +160,8 @@ textBoxFrame = ctk.CTkFrame(
     height=472,
     fg_color="#cfc7bd"
 )
+# Dont pack the textBoxFrame, it is unpacked here
+# so it can be toggled by a button
 
 inputHeader = ctk.CTkLabel(
     master=textBoxFrame,
@@ -170,9 +186,36 @@ convertCodeButton = ctk.CTkButton(
     font=("Gotham", 16),
     fg_color="#6d6e71",
     hover_color="#8c0b42",
-    command=modifyCode
+    command=formatCode
     )
 convertCodeButton.pack(anchor="nw", padx=10, pady=10)
+
+outputHeader = ctk.CTkLabel(
+    master=textBoxFrame,
+    text="Formatted HTML code:",
+    font=("Gotham", 16, "bold")
+    )
+outputHeader.pack(anchor="nw", padx=10)
+
+outputCode = ctk.CTkTextbox(
+    master=textBoxFrame,
+    width=400,
+    height=80,
+    wrap="word",
+    font=("Consolas", 12),
+    fg_color="#ededed",
+)
+outputCode.pack(anchor="nw", padx=10)
+
+copyCodeButton = ctk.CTkButton(
+    master=textBoxFrame,
+    text="Copy Code",
+    font=("Gotham", 16),
+    fg_color="#6d6e71",
+    hover_color="#00B9F2",
+    command=lambda : pyperclip.copy(outputCode.get("1.0", "end-1c"))
+    )
+copyCodeButton.pack(anchor="nw", padx=10, pady=10)
 #___End of Text Box Side_____________________
 
 buttonToggle = ctk.CTkButton(
@@ -181,7 +224,7 @@ buttonToggle = ctk.CTkButton(
     hover_color="#8c0b42",
     text="Toggle Textboxes",
     font=("Gotham", 16),
-    command=textBoxToggle #FIXME
+    command=textBoxToggle
 )
 buttonToggle.pack(pady=85, anchor="se")
 
