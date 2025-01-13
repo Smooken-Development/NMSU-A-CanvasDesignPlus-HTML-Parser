@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import pyperclip
 import RequirementsUpdater
 
-RequirementsUpdater.checkAndInstall()
+# RequirementsUpdater.checkAndInstall()
 
 
 # To install the necessary libraries:
