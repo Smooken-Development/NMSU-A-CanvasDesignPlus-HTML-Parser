@@ -23,10 +23,10 @@ RequirementsUpdater.checkAndInstall()
     ✔ make automatically change the HTML Class to apple variation_1
     - Package it for distribution
     ✔ Fix it so that it deletes all progress bars, then adds one at the top
-    - Make it so that it outprints the white text correctly
-    - Change it to also have a button that just formats the clipboard contents
-    - make it add an H2 header and a progress bar if there isn't one"
-    - add better documentation
+    ✔ Make it so that it outprints the white text correctly
+    ✔ Change it to also have a button that just formats the clipboard contents
+    ✔ make it add an H2 header and a progress bar if there isn't one"
+    ✔ add better documentation
 
     
     IDEAS FOR THE FUTURE:
@@ -35,7 +35,7 @@ RequirementsUpdater.checkAndInstall()
 '''
 
 
-'''https://docs.python.org/3/library/tk.html'''
+'''https://beautiful-soup-4.readthedocs.io/en/latest/'''
 '''https://customtkinter.tomschimansky.com/documentation/'''
 
 
@@ -44,7 +44,7 @@ RequirementsUpdater.checkAndInstall()
 appleClass = "kl_apple variation_1 kl_wrapper"
 progressBar = '<p class="kl_module_progress_bar" style="display: none; color: #000000; background-color: #00b9f2;">Basic Progress Bar (built in browser, hidden in app)</p>\n'
 crimsonBar = 'border-top-width: 3px; border-top-color: #882345;'
-noCodeToFormat = '''<div id="kl_wrapper_3" class="kl_apple kl_wrapper">
+baseCode = '''<div id="kl_wrapper_3" class="kl_apple kl_wrapper">
     <div id="kl_banner">
         <p class="kl_module_progress_bar" style="display: none; color: #000000; background-color: #00b9f2;">Basic Progress Bar (built in browser, hidden in app)</p>
         <h2><span id="kl_banner_right">Header 2</span></h2>
@@ -61,28 +61,31 @@ def modifyCode(htmlCode):
             h2Counter += 1
             if h2Counter > 1:
                 h2.name = 'h3'
-                h2.insert_before('<div id="kl_banner">', 'html.parser')
-                h2.inser_after('</div>', 'html.parser')
+                h2.wrap(soup.new_tag("div", id="kl_banner"))
 
-        # FIX ME: This is not working, make it so that it puts noCodeToFormat if there is no class at all
+        # This was broken, I have no idea what fixed it?
+        # If there are no divs, adds baseCode at the beginning
+        # FIX ME: It broke again. I'm not spending another second figuring this out rn
+        # I highly doubt there wil be a page broken this bad, but if there is,
+        # may God help us all
         if not soup.find('div', class_=True):
-            soup.insert(0, BeautifulSoup(noCodeToFormat, 'html.parser'))
-
-        if not soup.find('h2'):
-            soup.insert(1, BeautifulSoup('<div id="kl_banner"><h2><span id="kl_banner_right">Header 2</span></h2>\n</div>', 'html.parser'))
-
+            soup.insert(0, BeautifulSoup(baseCode, 'html.parser'))
+        
+        # Puts a progress bar on all h2 headers within the class div?
         if not soup.find('p', class_='kl_module_progress_bar'):
             for h2 in soup.find_all('h2'):
                 h2.insert_before(BeautifulSoup(progressBar, 'html.parser'))
 
+        # Adds a crimson border to all h3 headers
         for h3 in soup.find_all('h3'):
             h3['style'] = crimsonBar        # uses 'style' because there is special functionality in BeautifulSoup that lets you edit HTML code
 
-        for class_ in soup.find_all('class'):   #FIX ME: This is not working
+        # if no classes, put appleClass
+        for class_ in soup.find_all('div'):
             if soup.get('class') != appleClass:
                 class_['class'] = appleClass
-        
-        return str(soup)
+
+        return str(soup.prettify()) # I didn't know prettify existed, but thank god it does!
     except Exception as e:
         messagebox.showerror("Error:", f"Failed to process HTML: {e}")
         return ""   # Returns an empty string if there was an error
@@ -100,7 +103,7 @@ def formatCode():
 def textBoxToggle():
     # Toggles visibility of textBoxFrame
         if textBoxFrame.winfo_ismapped():
-            textBoxFrame.pack_forget()  # Hide the frame
+            textBoxFrame.pack_forget()  # Hides the frame
         else:
             textBoxFrame.pack(fill="both", padx=5, expand=True, side="right", anchor="ne")
 
@@ -111,6 +114,7 @@ def formatTextboxCodeButton():
     lambda: pyperclip.copy(outputCode.get("1.0", ctk.END))  # Copies formatted code to clipboard
 
 def formatClipboardCodeButton():
+    # This is the function for the "Format Clipboard Contents" button
     tempCode = modifyCode(pyperclip.paste())
     pyperclip.copy(tempCode)
 
@@ -275,8 +279,10 @@ buttonToggle = ctk.CTkButton(
 )
 buttonToggle.pack(pady=85, anchor="se")
 
+# I didn't create the libraries used, but I made this app for the Online Learning Center at NMSU Alamogordo
+# Smooken Development is just my GitHub username for anyone at the college reading this
 creditLabel = ctk.CTkLabel(app, text="© Created by Zachary A. Carmichael - Smooken Development (2024)\nZacAC2024@outlook.com", font=("Arial", 9, "italic"), text_color="gray")
 creditLabel.pack(side="bottom", anchor="se", pady=10, padx=5)
 
-
+# Runs the app window
 app.mainloop()
