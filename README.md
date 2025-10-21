@@ -1,17 +1,28 @@
-# This is an HTML parser for use in the Online Learning Center at NMSU Alamogordo.
-# While this can be used for anything you need, it will really only work on Canvas pages through the Design Plus editor.
+# NMSU Alamogordo HTML Parser
 
-# I do not own the libraries used. This is just a personal tool for our office.
+This is a personal tool developed for use in the Online Learning Center at **NMSU Alamogordo**.  
+While it can be used elsewhere, it’s specifically designed to work with **Canvas pages** edited via the **Design Plus** editor.
 
-# To Use:
-1) On the Canvas page, click edit
-2) Click switch to RAW HTML Editor
-3) Select inside of the textbox and press CTRL + A then CTRL + C
-4) Switch to the HTML Parser and click "Format Clipboard Contents"
-5) Switch back to the Canvas page and press CTRL + A then CTRL + V
+> **Note:** I do not own the libraries used—this is purely a utility for our office.
 
-# That should be the only thing you need to do. The other functionality in the app
-# is entirely for my own debugging use, or if you needed to see what the code was doing
+---
 
-# Work in progress is for if I eventually spend the time to figure out how to scrape the
-# Webpage and do it all manually
+## 🚀 How to Use
+
+1. Open the Canvas page and click **Edit**.
+2. Switch to the **RAW HTML Editor**.
+3. Click inside the textbox and press `CTRL + A`, then `CTRL + C`.
+4. Open the HTML Parser and click **Format Clipboard Contents**.
+5. Return to the Canvas page and press `CTRL + A`, then `CTRL + V`.
+
+That’s it! The rest of the app’s functionality is mainly for my own debugging or for inspecting the code behavior.
+
+---
+
+## 🛠️ Work in Progress
+
+Eventually, I’d like to implement full webpage scraping so the parser can operate without manual copy-paste steps.
+
+---
+
+Feel free to fork or adapt this for your own use—but keep in mind it’s tailored for our workflow.
